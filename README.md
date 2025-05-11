@@ -1,6 +1,6 @@
 # Neural Network from Scratch
 
-This project demonstrates how a neural network can be built from scratch to classify numbers as **odd** or **even** based on their binary representation. The project is divided into two parts:
+This project demonstrates how a neural network can be built from scratch without frameworks like tensorflow and pytorch to classify numbers as **odd** or **even** based on their binary representation. The project is divided into two parts:
 1. **Frontend** - Built using **React** to visualize the neural network training process.
 2. **Backend** - Built using **FastAPI** to handle API requests and run the neural network logic.
 
