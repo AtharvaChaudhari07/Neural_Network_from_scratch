@@ -1,78 +1,85 @@
-# Neural_Network_from_scratch
-Implementation of neural network in python without tensorflow with forward and backpropagation to classify the digit as odd or even. Neural network takes input as binary format.
+# Neural Network from Scratch
 
-```python
-import numpy as np
+This project demonstrates how a neural network can be built from scratch to classify numbers as **odd** or **even** based on their binary representation. The project is divided into two parts:
+1. **Frontend** - Built using **React** to visualize the neural network training process.
+2. **Backend** - Built using **FastAPI** to handle API requests and run the neural network logic.
 
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+## Project Description
 
-def sigmoid_derivative(x):
-    return x * (1 - x)
+This project allows users to:
+- Input any number (from 0 to 255).
+- See its binary representation.
+- Visualize how the neural network classifies the number as **odd** or **even**.
+- See how the neural network is trained interactively step-by-step.
 
-def ascii_to_binary(num):
-    binary = bin(num)[2:].zfill(8)
-    return [int(digit) for digit in binary]
+### Why Train a Neural Network for Odd/Even Classification?
 
-input_size = 8
-hidden_size = 16
-output_size = 1
+While one might think dividing by 2 is a simple way to determine if a number is odd or even, neural networks can be a powerful tool for learning complex patterns. In this project, we show how a neural network learns to classify numbers based on their binary inputs.
 
-hidden_weights = np.random.rand(input_size, hidden_size)
-hidden_bias = np.zeros((1, hidden_size))
-output_weights = np.random.randn(hidden_size, output_size)
-output_bias = np.zeros((1, output_size))
+- We train the network using numbers **1-100**.
+- The network predicts numbers up to **255** as it can process 8-bit binary numbers.
+- This project helps understand how neural networks work from scratch, offering interactive steps to visualize forward propagation, backpropagation, and more.
 
-def forward_propagation(input_number):
-    hidden_wsum = np.dot(input_number, hidden_weights) + hidden_bias
-    hidden_output = sigmoid(hidden_wsum)
+## Installation and Setup
 
-    output_wsum = np.dot(hidden_output, output_weights) + output_bias
-    final_output = sigmoid(output_wsum)
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/AtharvaChaudhari07/Neural_Network_from_scratch.git
+    cd Neural_Network_from_scratch
+    ```
 
-    return hidden_output, final_output
+2. **Backend Setup**:
+    - Navigate to the `backend` directory:
+    ```bash
+    cd backend
+    ```
+    - Install the dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+    - Run the FastAPI backend:
+    ```bash
+    uvicorn main:app --host 0.0.0.0 --port 10000
+    ```
 
-def backpropagation(input_number, hidden_output, final_output, target):
-    global hidden_weights, hidden_bias, output_weights, output_bias
+3. **Frontend Setup**:
+    - Navigate to the `frontend` directory:
+    ```bash
+    cd frontend
+    ```
+    - Install the dependencies:
+    ```bash
+    npm install
+    ```
+    - Run the React app locally:
+    ```bash
+    npm run dev
+    ```
 
-    error_out = target - final_output
-    delta_out = error_out * sigmoid_derivative(final_output)
+## Deployment
 
-    error_hidden = np.dot(delta_out, output_weights.T)
-    delta_hidden = error_hidden * sigmoid_derivative(hidden_output)
+### Frontend Deployment:
+The frontend is deployed using **Vercel**. You can visit the live website here:  
+[Visit the Neural Network Web Application](https://your-vercel-deployment-url)
 
-    output_weights += np.dot(hidden_output.T, delta_out)*learning_rate
-    hidden_weights += np.dot(input_number.T, delta_hidden)*learning_rate
+### Backend Deployment:
+The backend is deployed using **Render**. It is automatically connected to the frontend, and the API can be accessed via the URL provided by Render.
 
-    output_bias += np.sum(delta_out, axis=0, keepdims=True)
-    hidden_bias += np.sum(delta_hidden, axis=0, keepdims=True)
+## How to Use
 
-X_train = np.array([ascii_to_binary(decnum) for decnum in range(100)])
-y_train = np.array([i % 2 for i in range(100)]).reshape(-1, 1)
+1. Go to the deployed site (Vercel URL).
+2. Enter any number between **0 and 255**.
+3. See its binary representation.
+4. Watch how the neural network processes the input and classifies it as **Odd** or **Even**.
+5. You can visualize the training process step-by-step, including forward propagation, backpropagation, and network updates.
 
-epochs = 300
-learning_rate=0.1
-for epoch in range(epochs):
-    for i in range(len(y_train)):
-        input_number = np.array(X_train[i]).reshape(1, -1)
-        target = np.array(y_train[i])
+## Technologies Used
+- **React**: Frontend for interactive user interface.
+- **FastAPI**: Backend to serve API requests and run neural network logic.
+- **Python**: The core language for building the neural network.
+- **Vercel**: Hosting platform for the frontend.
+- **Render**: Hosting platform for the backend.
 
-        hidden_output, final_output = forward_propagation(input_number)
-        backpropagation(input_number, hidden_output, final_output, target)
-
-# X_test = np.array((ascii_to_binary(12),ascii_to_binary(5)))
-X_test=[]
-print("you may enter numbers from 0 - 255 as the input is binary till 8 spaces (binary[11111111] = 255)")
-count=int(input("how many nos to test : "))
-for i in range(count):
-    dec=int(input("Enter number (press enter) : "))
-    X_test.append(ascii_to_binary(dec))
-X_test=np.array(X_test)
-
-for i in range(len(X_test)):
-    input_number = X_test[i].reshape(1, -1)
-    _, predicted_output = forward_propagation(input_number)
-    result = "Odd" if predicted_output >= 0.5 else "Even"
-    print(f"Binary Number: {X_test[i]}, Predicted Label: {result}")
-
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
