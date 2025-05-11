@@ -18,6 +18,9 @@ import StepVisualization from './components/StepVisualization'
 import NetworkDetails from './components/NetworkDetails'
 import ProjectDescription from './components/ProjectDescription'
 
+// API endpoint configuration
+const API_BASE_URL = 'https://neural-network-from-scratch.onrender.com'
+
 function App() {
   const [prediction, setPrediction] = useState(null)
   const [networkState, setNetworkState] = useState(null)
@@ -32,7 +35,7 @@ function App() {
     setIsLoading(true)
     try {
       console.log('Sending request to backend...')
-      const response = await fetch('http://localhost:8000/predict', {
+      const response = await fetch(`${API_BASE_URL}/predict`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +61,7 @@ function App() {
       console.error('Error details:', error)
       toast({
         title: 'Error',
-        description: `Failed to get prediction: ${error.message}. Please make sure the backend server is running at http://localhost:8000`,
+        description: `Failed to get prediction: ${error.message}. Please check if the backend server is running at ${API_BASE_URL}`,
         status: 'error',
         duration: 5000,
         isClosable: true,
